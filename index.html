@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagy-Azoulay Family Tree</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 60px 40px; overflow-x: auto; }
+        .tree-container { min-width: fit-content; display: flex; justify-content: center; }
+        
+        /* Layout Structure */
+        .tree ul { padding-top: 25px; position: relative; display: flex; justify-content: center; }
+        .tree li { list-style-type: none; position: relative; padding: 25px 5px 0 5px; text-align: center; }
+
+        /* Connector Lines */
+        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #adb5bd; width: 50%; height: 25px; }
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid #adb5bd; }
+        .tree li:only-child::after, .tree li:only-child::before { display: none; }
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::after { border-radius: 5px 0 0 0; }
+        .tree li:last-child::before { border-right: 2px solid #adb5bd; border-radius: 0 5px 0 0; }
+        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #adb5bd; width: 0; height: 25px; }
+
+        /* Node Styling */
+        .person {
+            border: 1px solid #ced4da; padding: 10px 12px; background: #fff; border-radius: 4px;
+            text-decoration: none; color: #333; font-size: 13px; font-weight: 600;
+            display: inline-block; min-width: 110px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .person:hover { background: #3498db; color: #fff; border-color: #2980b9; transform: translateY(-2px); }
+        
+        /* Light Green for Married-In */
+        .married-in { background-color: #90EE90 !important; }
+
+        .couple { display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .m-line { width: 12px; height: 2px; background: #adb5bd; }
+    </style>
+</head>
+<body>
+
+    <div class="tree-container">
+        <div class="tree" id="root"></div>
+    </div>
+
+<script>
+const familyData = [
+  { "name": "Meir Azoulay", "spouse": "Esther Azoulay", "dad": "", "mom": "", "link": "https://photos.app.goo.gl/YourLink1" },
+  { "name": "Esther Azoulay", "spouse": "Meir Azoulay", "mom": "", "dad": "", "link": "https://photos.app.goo.gl/YourLink2" },
+  { "name": "Leon Azoulay", "spouse": "Clara Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Marinette Komornik", "spouse": "Jacques Komornik", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Jacob Azoulay", "spouse": "Barbara Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/9wirM7BFt4rQqu2MA" },
+  { "name": "Shlomo Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Marco Azoulay", "spouse": "Claudet", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Moshe Azoulay", "spouse": "Hava Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/AoFrt1ZQhwawuBeRA" },
+  { "name": "Albert Azoulay", "spouse": "", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Vardit Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Ronit Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Galia Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Revital Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Sylvia Keren", "spouse": "Shimon Keren", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Yoram Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Esti Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Osnat Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Bar Berkowitch", "dad": "Jacob Berkowitch", "mom": "Osnat Keren", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Niv Berkowitch", "dad": "Jacob Berkowitch", "mom": "Osnat Keren", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Dolly Sagy", "spouse": "Jimmy Sagy", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Jimmy Sagy", "spouse": "Dolly Sagy", "dad": "Ovadia Jemal", "mom": "Simha Jemal", "in married": "Yes", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Naor Sagy", "dad": "Jimmy Sagy", "mom": "Dolly Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Itay Sagy", "spouse": "Eti Sagy", "dad": "Jimmy Sagy", "mom": "Dolly Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Danielle Sagy", "dad": "Naor Sagy", "mom": "Ola German", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Eti Sagy", "spouse": "Itay Sagy", "dad": "", "mom": "", "in married": "Yes", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Shaked Sagy", "dad": "Itay Sagy", "mom": "Eti Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
+  { "name": "Shoham Sagy", "dad": "Itay Sagy", "mom": "Eti Sagy", "link": "https://photos.app.goo.gl/YourLink3" }
+];
+
+const renderedSet = new Set();
+
+function checkMarriedIn(person) {
+    if (!person) return true;
+    if (person["in married"] === "Yes") return true;
+    return person.dad === "" && person.mom === "";
+}
+
+function buildTree(name) {
+    if (renderedSet.has(name)) return "";
+    const p = familyData.find(x => x.name === name);
+    if (!p) return "";
+
+    let html = `<li>`;
+    
+    if (p.spouse) {
+        renderedSet.add(p.name);
+        renderedSet.add(p.spouse);
+        const s = familyData.find(x => x.name === p.spouse);
+        
+        const pClass = checkMarriedIn(p) ? "married-in" : "";
+        const sClass = checkMarriedIn(s) ? "married-in" : "";
+        
+        html += `<div class="couple">
+                    <a href="${p.link}" target="_blank" class="person ${pClass}">${p.name}</a>
+                    <div class="m-line"></div>
+                    <a href="${s ? s.link : '#'}" target="_blank" class="person ${sClass}">${p.spouse}</a>
+                 </div>`;
+    } else {
+        renderedSet.add(p.name);
+        const pClass = checkMarriedIn(p) ? "married-in" : "";
+        html += `<a href="${p.link}" target="_blank" class="person ${pClass}">${p.name}</a>`;
+    }
+
+    const children = familyData.filter(c => 
+        (c.dad === name || c.mom === name) || 
+        (p.spouse && (c.dad === p.spouse || c.mom === p.spouse))
+    );
+
+    if (children.length > 0) {
+        html += `<ul>`;
+        children.forEach(c => { html += buildTree(c.name); });
+        html += `</ul>`;
+    }
+
+    html += `</li>`;
+    return html;
+}
+
+document.getElementById('root').innerHTML = `<ul>${buildTree("Meir Azoulay")}</ul>`;
+</script>
+</body>
+</html>
