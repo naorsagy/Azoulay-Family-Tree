@@ -2,128 +2,352 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sagy-Azoulay Family Tree</title>
+    <title>Azoulay Family Tree - Comprehensive Spouses & Links</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 60px 40px; overflow-x: auto; }
-        .tree-container { min-width: fit-content; display: flex; justify-content: center; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; overflow: hidden; }
+        #viewport { width: 100vw; height: 100vh; cursor: grab; display: flex; align-items: flex-start; justify-content: center; }
+        #tree-wrapper { transform-origin: center center; padding: 2500px; }
         
-        /* Layout Structure */
-        .tree ul { padding-top: 25px; position: relative; display: flex; justify-content: center; }
-        .tree li { list-style-type: none; position: relative; padding: 25px 5px 0 5px; text-align: center; }
-
-        /* Connector Lines */
-        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #adb5bd; width: 50%; height: 25px; }
-        .tree li::after { right: auto; left: 50%; border-left: 2px solid #adb5bd; }
+        .tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; }
+        .tree li { list-style-type: none; position: relative; padding: 20px 5px 0 5px; text-align: center; }
+        
+        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #999; width: 50%; height: 20px; }
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid #999; }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
-        .tree li:last-child::before { border-right: 2px solid #adb5bd; border-radius: 0 5px 0 0; }
-        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #adb5bd; width: 0; height: 25px; }
+        .tree li:last-child::before { border-right: 2px solid #999; border-radius: 0 5px 0 0; }
+        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #999; width: 0; height: 20px; }
 
-        /* Node Styling */
         .person {
-            border: 1px solid #ced4da; padding: 10px 12px; background: #fff; border-radius: 4px;
-            text-decoration: none; color: #333; font-size: 13px; font-weight: 600;
-            display: inline-block; min-width: 110px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.3s;
+            background: #fff; border: 1px solid #ccc; padding: 6px 10px;
+            border-radius: 4px; display: inline-block; min-width: 135px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 11px;
+            color: #333; position: relative; z-index: 10;
         }
-        .person:hover { background: #3498db; color: #fff; border-color: #2980b9; transform: translateY(-2px); }
+        .person .uid { display: block; font-size: 9px; color: #777; margin-top: 2px; }
+        .person a { text-decoration: none; color: #2980b9; font-weight: bold; }
+        .person a:hover { text-decoration: underline; color: #d35400; }
         
-        /* Light Green for Married-In */
-        .married-in { background-color: #90EE90 !important; }
+        .couple { display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .marriage-line { width: 10px; height: 2px; background: #999; }
+        
+        .gen-1 { border-top: 4px solid #e17055; }
+        .gen-2 { border-top: 4px solid #0984e3; }
+        .gen-3 { border-top: 4px solid #00b894; }
+        .gen-4 { border-top: 4px solid #6c5ce7; }
+        .gen-5 { border-top: 4px solid #fdcb6e; }
 
-        .couple { display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .m-line { width: 12px; height: 2px; background: #adb5bd; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; z-index: 100; }
+        .btn { padding: 10px 15px; background: white; border: 1px solid #ccc; cursor: pointer; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="tree-container">
-        <div class="tree" id="root"></div>
+<div class="controls">
+    <button class="btn" onclick="zoom(1.1)">Zoom +</button>
+    <button class="btn" onclick="zoom(0.9)">Zoom -</button>
+    <button class="btn" onclick="reset()">Reset Focus</button>
+</div>
+
+<div id="viewport">
+    <div id="tree-wrapper">
+        <div class="tree">
+            <ul>
+                <!-- GEN 1 -->
+                <li>
+                    <div class="couple">
+                        <div class="person gen-1">Mira Azoulay <span class="uid">101</span></div>
+                        <div class="marriage-line"></div>
+                        <div class="person gen-1">Jacob Azoulay <span class="uid">102</span></div>
+                    </div>
+                    <ul>
+                        <li><div class="person gen-2">Yitzhak Azoulay <span class="uid">201</span></div></li>
+                        <li><div class="person gen-2">Rafael Azoulay <span class="uid">202</span></div></li>
+                        <li><div class="person gen-2">Esther Azoulay (Sister) <span class="uid">203</span></div></li>
+                        <li>
+                            <!-- FOCUS CENTER -->
+                            <div class="couple" id="focus-center">
+                                <div class="person gen-2"><a href="https://photos.app.goo.gl/Zd12rwVSz1VZDBZEA" target="_blank">Meir Azoulay</a> <span class="uid">204</span></div>
+                                <div class="marriage-line"></div>
+                                <div class="person gen-2"><a href="https://photos.app.goo.gl/hGbm4nuxyBQh3Cbq9" target="_blank">Esther Azoulay</a> <span class="uid">205</span></div>
+                            </div>
+                            <ul>
+                                <!-- LEON BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/xTtJgdyfUwSdii2B6" target="_blank">Leon Azoulay</a> <span class="uid">301</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/SmNgtyLSoSim7mMA9" target="_blank">Clara Azoulay</a> <span class="uid">302</span></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Dudu Azoulay <span class="uid">401</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Ronit Azoulay <span class="uid">490</span></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/zWkp3GZgvr4v7JiK7" target="_blank">Lilian Azoulay</a> <span class="uid">402</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">David Azoulay <span class="uid">499</span></div>
+                                            </div>
+                                        </li>
+                                        <li><div class="person gen-4"><a href="https://photos.app.goo.gl/zWkp3GZgvr4v7JiK7" target="_blank">Anita</a> <span class="uid">403</span></div></li>
+                                        <li><div class="person gen-4">Linda <span class="uid">404</span></div></li>
+                                    </ul>
+                                </li>
+
+                                <!-- SIMI BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3">Simi Abtan <span class="uid">303</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/qNgaEsciTiPpQxcF6" target="_blank">Jacques Abtan</a> <span class="uid">304</span></div>
+                                    </div>
+                                    <ul>
+                                        <li><div class="person gen-4"><a href="https://photos.app.goo.gl/iNNyn8KXdHDUmEZy6" target="_blank">Jean pierre Abtan</a> <span class="uid">405</span></div></li>
+                                        <li><div class="person gen-4">Michelle Abtan <span class="uid">406</span></div></li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Annie Abtan Cohen <span class="uid">407</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Shlomo Cohen <span class="uid">408</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="person gen-5">Dan Cohen <span class="uid">501</span></div></li>
+                                                <li><div class="person gen-5">Ben Cohen <span class="uid">502</span></div></li>
+                                                <li><div class="person gen-5">Ilan Cohen <span class="uid">503</span></div></li>
+                                                <li><div class="person gen-5">Sara Cohen <span class="uid">504</span></div></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- MARINETTE BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/SyJbcoicU14pmyBm7" target="_blank">Marinette Komornik</a> <span class="uid">306</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/8A9RPbJ4wFLod1s47" target="_blank">Jacques Komornik</a> <span class="uid">305</span></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/hgmsTdUZvRDZXBtu8" target="_blank">Gregory Komornik</a> <span class="uid">409</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Emily <span class="uid">410</span></div>
+                                            </div>
+                                            <ul><li><div class="person gen-5"><a href="https://photos.app.goo.gl/VG9EbvcYKEu669vS6" target="_blank">Simon Komornik</a> <span class="uid">505</span></div></li></ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Isabelle Amar <span class="uid">411</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Fred Amar <span class="uid">478</span></div>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="couple">
+                                                        <div class="person gen-5">Jessica Zemmour <span class="uid">506</span></div>
+                                                        <div class="marriage-line"></div>
+                                                        <div class="person gen-5">Kevin Zemmour <span class="uid">507</span></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- JACOB (GEN 3) BRANCH -->
+                                <li>
+                                    <div class="person gen-3"><a href="https://photos.app.goo.gl/9wirM7BFt4rQqu2MA" target="_blank">Jacob Azoulay</a> <span class="uid">307</span></div>
+                                    <ul>
+                                        <li>
+                                            <div class="person">Fanny Azoulay <span class="uid">377</span></div>
+                                            <ul>
+                                                <li><div class="person gen-4">Caroline Azoulay <span class="uid">412</span></div></li>
+                                                <li><div class="person gen-4">Celine <span class="uid">413</span></div></li>
+                                                <li><div class="person gen-4">Philip Azoulay <span class="uid">414</span></div></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <div class="person gen-3"><a href="https://photos.app.goo.gl/9wirM7BFt4rQqu2MA" target="_blank">Barbara Azoulay</a> <span class="uid">350</span></div>
+                                            <ul><li><div class="person gen-4">Olivia <span class="uid">415</span></div></li></ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- ALBERT BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/tA9GNrzQg5VKuPrw9" target="_blank">Albert Azoulay</a> <span class="uid">310</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/64dwwNMJx9KJ2NPh7" target="_blank">Esther Azoulay-2</a> <span class="uid">311</span></div>
+                                    </div>
+                                    <ul>
+                                        <li><div class="person gen-4">Shlomi Erez <span class="uid">419</span></div></li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/nW3onSqnQ293JT7s6" target="_blank">Dani Azoulay</a> <span class="uid">420</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Orly Azoulay</div>
+                                            </div>
+                                        </li>
+                                        <li><div class="person gen-4">Yaffa <span class="uid">421</span></div></li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Shmuel Azoulay <span class="uid">422</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Tirza Azoulay</div>
+                                            </div>
+                                        </li>
+                                        <li><div class="person gen-4">Ann <span class="uid">423</span></div></li>
+                                    </ul>
+                                </li>
+
+                                <!-- MOSHE BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/i73g92Hc57J9ZRNH9" target="_blank">Moshe Azoulay</a> <span class="uid">312</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/5r5XAMKefEcd6vpy7" target="_blank">Hava Azoulay</a> <span class="uid">313</span></div>
+                                    </div>
+                                    <ul>
+                                        <li><div class="person gen-4">Vardit Azoulay <span class="uid">424</span></div></li>
+                                        <li>
+                                            <div class="person gen-4">Ronit Azoulay <span class="uid">425</span></div>
+                                            <ul><li><div class="person gen-5">Danielle Aharonovich <span class="uid">508</span></div></li></ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Galia Shimoni <span class="uid">426</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Eran Shimoni <span class="uid">427</span></div>
+                                            </div>
+                                            <ul><li><div class="person gen-5">Shaked Ben-Ari <span class="uid">509</span></div></li></ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4">Revital Mayo <span class="uid">428</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Israel Mayo <span class="uid">429</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="person gen-5">Shay Mayo <span class="uid">510</span></div></li>
+                                                <li><div class="person gen-5">Shahar Mayo <span class="uid">511</span></div></li>
+                                                <li><div class="person gen-5">Snir Mayo <span class="uid">512</span></div></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- SYLVIA BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/9LrW7UYfmkVAY4vS6" target="_blank">Sylvia Keren</a> <span class="uid">315</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/q1ihKoa3GmHtmwB18" target="_blank">Shimon Keren</a> <span class="uid">314</span></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="person gen-4"><a href="https://photos.app.goo.gl/kv7ak7HreNLdpEp2A" target="_blank">Yoram Keren</a> <span class="uid">430</span></div>
+                                            <ul>
+                                                <li><div class="person gen-5">Romi Keren <span class="uid">513</span></div></li>
+                                                <li><div class="person gen-5">Miya Keren <span class="uid">514</span></div></li>
+                                                <li><div class="person gen-5">Amitay Keren <span class="uid">515</span></div></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/dvQAsSZndVLVM2Fi8" target="_blank">Esti Canetti</a> <span class="uid">431</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Ori Canetti <span class="uid">432</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="person gen-5">Maya Canetti <span class="uid">516</span></div></li>
+                                                <li><div class="person gen-5">Alon Canetti <span class="uid">517</span></div></li>
+                                                <li><div class="person gen-5">Ido Canetti <span class="uid">518</span></div></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/8YkrHxCpRb6yNmsQ9" target="_blank">Osnat Keren</a> <span class="uid">433</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Jacob Berkowitz <span class="uid">460</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="person gen-5">Bar Berkowitz <span class="uid">519</span></div></li>
+                                                <li><div class="person gen-5">Niv Berkowitz <span class="uid">520</span></div></li>
+                                                <li><div class="person gen-5">Dan Berkowitz <span class="uid">521</span></div></li>
+                                                <li><div class="person gen-5">Lian Berkowitz <span class="uid">522</span></div></li>
+                                                <li><div class="person gen-5">Asaf Berkowitz <span class="uid">523</span></div></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- DOLLY BRANCH -->
+                                <li>
+                                    <div class="couple">
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/JJ6JwpUFPa9mXvx59" target="_blank">Dolly Sagy</a> <span class="uid">316</span></div>
+                                        <div class="marriage-line"></div>
+                                        <div class="person gen-3"><a href="https://photos.app.goo.gl/81WcWgnGX7M2zhet9" target="_blank">Jimmy Sagy</a> <span class="uid">317</span></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="person gen-4"><a href="https://photos.app.goo.gl/miQtCm5X2aayBmNMA" target="_blank">Naor Sagy</a> <span class="uid">444</span></div>
+                                            <ul><li><div class="person gen-5">Danielle Sagy <span class="uid">524</span></div></li></ul>
+                                        </li>
+                                        <li>
+                                            <div class="couple">
+                                                <div class="person gen-4"><a href="https://photos.app.goo.gl/u74HnSTZ1J7uw8wm6" target="_blank">Itay Sagy</a> <span class="uid">445</span></div>
+                                                <div class="marriage-line"></div>
+                                                <div class="person gen-4">Eti Sagy <span class="uid">446</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="person gen-5">Shaked Sagy <span class="uid">525</span></div></li>
+                                                <li><div class="person gen-5">Shoham Sagy <span class="uid">526</span></div></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
 
 <script>
-const familyData = [
-  { "name": "Meir Azoulay", "spouse": "Esther Azoulay", "dad": "", "mom": "", "link": "https://photos.app.goo.gl/YourLink1" },
-  { "name": "Esther Azoulay", "spouse": "Meir Azoulay", "mom": "", "dad": "", "link": "https://photos.app.goo.gl/YourLink2" },
-  { "name": "Leon Azoulay", "spouse": "Clara Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Marinette Komornik", "spouse": "Jacques Komornik", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Jacob Azoulay", "spouse": "Barbara Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/9wirM7BFt4rQqu2MA" },
-  { "name": "Shlomo Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Marco Azoulay", "spouse": "Claudet", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Moshe Azoulay", "spouse": "Hava Azoulay", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/AoFrt1ZQhwawuBeRA" },
-  { "name": "Albert Azoulay", "spouse": "", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Vardit Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Ronit Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Galia Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Revital Azoulay", "dad": "Moshe Azoulay", "mom": "Hava Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Sylvia Keren", "spouse": "Shimon Keren", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Yoram Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Esti Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Osnat Keren", "dad": "Shimon Keren", "mom": "Sylvia Keren", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Bar Berkowitch", "dad": "Jacob Berkowitch", "mom": "Osnat Keren", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Niv Berkowitch", "dad": "Jacob Berkowitch", "mom": "Osnat Keren", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Dolly Sagy", "spouse": "Jimmy Sagy", "dad": "Meir Azoulay", "mom": "Esther Azoulay", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Jimmy Sagy", "spouse": "Dolly Sagy", "dad": "Ovadia Jemal", "mom": "Simha Jemal", "in married": "Yes", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Naor Sagy", "dad": "Jimmy Sagy", "mom": "Dolly Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Itay Sagy", "spouse": "Eti Sagy", "dad": "Jimmy Sagy", "mom": "Dolly Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Danielle Sagy", "dad": "Naor Sagy", "mom": "Ola German", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Eti Sagy", "spouse": "Itay Sagy", "dad": "", "mom": "", "in married": "Yes", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Shaked Sagy", "dad": "Itay Sagy", "mom": "Eti Sagy", "link": "https://photos.app.goo.gl/YourLink3" },
-  { "name": "Shoham Sagy", "dad": "Itay Sagy", "mom": "Eti Sagy", "link": "https://photos.app.goo.gl/YourLink3" }
-];
+let scale = 1.0, x = 0, y = 0;
+const wrap = document.getElementById('tree-wrapper');
+const viewport = document.getElementById('viewport');
 
-const renderedSet = new Set();
+function update() { wrap.style.transform = `translate(${x}px, ${y}px) scale(${scale})`; }
 
-function checkMarriedIn(person) {
-    if (!person) return true;
-    if (person["in married"] === "Yes") return true;
-    return person.dad === "" && person.mom === "";
+function reset() {
+    scale = 1.0;
+    const target = document.getElementById('focus-center');
+    const rect = target.getBoundingClientRect();
+    const vRect = viewport.getBoundingClientRect();
+    x = (vRect.width / 2) - (rect.left + rect.width / 2);
+    y = (vRect.height / 3) - (rect.top + rect.height / 2);
+    update();
 }
 
-function buildTree(name) {
-    if (renderedSet.has(name)) return "";
-    const p = familyData.find(x => x.name === name);
-    if (!p) return "";
+function zoom(m) { scale *= m; update(); }
 
-    let html = `<li>`;
-    
-    if (p.spouse) {
-        renderedSet.add(p.name);
-        renderedSet.add(p.spouse);
-        const s = familyData.find(x => x.name === p.spouse);
-        
-        const pClass = checkMarriedIn(p) ? "married-in" : "";
-        const sClass = checkMarriedIn(s) ? "married-in" : "";
-        
-        html += `<div class="couple">
-                    <a href="${p.link}" target="_blank" class="person ${pClass}">${p.name}</a>
-                    <div class="m-line"></div>
-                    <a href="${s ? s.link : '#'}" target="_blank" class="person ${sClass}">${p.spouse}</a>
-                 </div>`;
-    } else {
-        renderedSet.add(p.name);
-        const pClass = checkMarriedIn(p) ? "married-in" : "";
-        html += `<a href="${p.link}" target="_blank" class="person ${pClass}">${p.name}</a>`;
-    }
+let isDragging = false, startX, startY;
+viewport.onmousedown = (e) => { isDragging = true; startX = e.clientX - x; startY = e.clientY - y; viewport.style.cursor = 'grabbing'; };
+window.onmousemove = (e) => { if (isDragging) { x = e.clientX - startX; y = e.clientY - startY; update(); } };
+window.onmouseup = () => { isDragging = false; viewport.style.cursor = 'grab'; };
 
-    const children = familyData.filter(c => 
-        (c.dad === name || c.mom === name) || 
-        (p.spouse && (c.dad === p.spouse || c.mom === p.spouse))
-    );
-
-    if (children.length > 0) {
-        html += `<ul>`;
-        children.forEach(c => { html += buildTree(c.name); });
-        html += `</ul>`;
-    }
-
-    html += `</li>`;
-    return html;
-}
-
-document.getElementById('root').innerHTML = `<ul>${buildTree("Meir Azoulay")}</ul>`;
+setTimeout(reset, 100);
 </script>
 </body>
 </html>
