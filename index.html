@@ -2,11 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Updated viewport to allow user scaling/pinching for the large tree -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Azoulay Family Tree - Comprehensive Spouses & Links</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; overflow: hidden; }
-        #viewport { width: 100vw; height: 100vh; cursor: grab; display: flex; align-items: flex-start; justify-content: center; }
-        #tree-wrapper { transform-origin: center center; padding: 2500px; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            /* Changed from hidden to auto to allow mobile scrolling */
+            overflow: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        #viewport { 
+            width: 100vw; 
+            height: 100vh; 
+            cursor: grab; 
+            display: flex; 
+            align-items: flex-start; 
+            justify-content: center; 
+            /* Ensures touch drags move the tree, not the whole page */
+            touch-action: pan-x pan-y; 
+        }
+
+        /* Reduced padding to prevent the tree from disappearing into a massive void on small screens */
+        #tree-wrapper { 
+            transform-origin: center center; 
+            padding: 500px; 
+            display: inline-block;
+        }
         
         .tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; }
         .tree li { list-style-type: none; position: relative; padding: 20px 5px 0 5px; text-align: center; }
@@ -20,26 +45,36 @@
         .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #999; width: 0; height: 20px; }
 
         .person {
-            background: #fff; border: 1px solid #ccc; padding: 6px 10px;
-            border-radius: 4px; display: inline-block; min-width: 135px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 11px;
+            background: #fff; border: 1px solid #ccc; padding: 8px 12px;
+            border-radius: 4px; display: inline-block; min-width: 140px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 12px;
             color: #333; position: relative; z-index: 10;
         }
         .person .uid { display: block; font-size: 9px; color: #777; margin-top: 2px; }
         .person a { text-decoration: none; color: #2980b9; font-weight: bold; }
-        .person a:hover { text-decoration: underline; color: #d35400; }
         
         .couple { display: flex; align-items: center; justify-content: center; gap: 4px; }
         .marriage-line { width: 10px; height: 2px; background: #999; }
         
+        /* Generation Colors */
         .gen-1 { border-top: 4px solid #e17055; }
         .gen-2 { border-top: 4px solid #0984e3; }
         .gen-3 { border-top: 4px solid #00b894; }
         .gen-4 { border-top: 4px solid #6c5ce7; }
         .gen-5 { border-top: 4px solid #fdcb6e; }
 
-        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; z-index: 100; }
-        .btn { padding: 10px 15px; background: white; border: 1px solid #ccc; cursor: pointer; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; }
+        /* Controls adjusted for easier thumb access on Android */
+        .controls { position: fixed; bottom: 30px; left: 20px; display: flex; gap: 15px; z-index: 100; }
+        .btn { 
+            padding: 12px 18px; 
+            background: white; 
+            border: 1px solid #ccc; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
