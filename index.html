@@ -33,7 +33,7 @@
             align-items: flex-start; 
             justify-content: center; 
             /* Ensures touch drags move the tree, not the whole page */
-            touch-action: pan-x pan-y; 
+            touch-action: none; 
         }
 
         /* Reduced padding to prevent the tree from disappearing into a massive void on small screens */
@@ -76,19 +76,19 @@
         /* Controls adjusted for easier thumb access on Android */
         .controls { position: fixed; bottom: 30px; left: 20px; display: flex; gap: 15px; z-index: 100; }
         .btn { 
-            padding: 12px 18px; 
+            padding: 15px 22px; 
             background: white; 
             border: 1px solid #ccc; 
             cursor: pointer; 
             border-radius: 8px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-<h1 style="text-align: center;">Azoulay Family Tree 1.3</h1>
+<h1 style="text-align: center;">Azoulay Family Tree 1.5</h1>
 <div class="controls">
     <button class="btn" onclick="zoom(1.1)">Zoom +</button>
     <button class="btn" onclick="zoom(0.9)">Zoom -</button>
@@ -370,29 +370,95 @@
 
 <script>
 let scale = 1.0, x = 0, y = 0;
+let isDragging = false;
+let startX, startY;
+let initialPinchDistance = null;
+
 const wrap = document.getElementById('tree-wrapper');
 const viewport = document.getElementById('viewport');
 
-function update() { wrap.style.transform = `translate(${x}px, ${y}px) scale(${scale})`; }
+function update() { 
+    wrap.style.transform = `translate(${x}px, ${y}px) scale(${scale})`; 
+}
+
+function zoom(m) { 
+    scale *= m; 
+    // Prevent zooming out too far or in too close
+    scale = Math.min(Math.max(0.1, scale), 3);
+    update(); 
+}
 
 function reset() {
-    scale = 1.0;
+    scale = 0.6; // Start slightly zoomed out for mobile overview
     const target = document.getElementById('focus-center');
     const rect = target.getBoundingClientRect();
     const vRect = viewport.getBoundingClientRect();
+    
+    // Center logic
     x = (vRect.width / 2) - (rect.left + rect.width / 2);
     y = (vRect.height / 3) - (rect.top + rect.height / 2);
     update();
 }
 
-function zoom(m) { scale *= m; update(); }
-
-let isDragging = false, startX, startY;
-viewport.onmousedown = (e) => { isDragging = true; startX = e.clientX - x; startY = e.clientY - y; viewport.style.cursor = 'grabbing'; };
-window.onmousemove = (e) => { if (isDragging) { x = e.clientX - startX; y = e.clientY - startY; update(); } };
+// --- Mouse Events ---
+viewport.onmousedown = (e) => { 
+    isDragging = true; 
+    startX = e.clientX - x; 
+    startY = e.clientY - y; 
+    viewport.style.cursor = 'grabbing'; 
+};
+window.onmousemove = (e) => { 
+    if (isDragging) { 
+        x = e.clientX - startX; 
+        y = e.clientY - startY; 
+        update(); 
+    } 
+};
 window.onmouseup = () => { isDragging = false; viewport.style.cursor = 'grab'; };
 
-setTimeout(reset, 100);
+// --- Touch Events (Mobile) ---
+viewport.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX - x;
+        startY = e.touches[0].clientY - y;
+    } else if (e.touches.length === 2) {
+        // Prepare for pinch-to-zoom
+        initialPinchDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+    }
+}, { passive: false });
+
+viewport.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Stop page bounce/scroll
+
+    if (e.touches.length === 1 && isDragging) {
+        x = e.touches[0].clientX - startX;
+        y = e.touches[0].clientY - startY;
+        update();
+    } else if (e.touches.length === 2) {
+        const currentDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        
+        if (initialPinchDistance) {
+            const delta = currentDistance / initialPinchDistance;
+            zoom(delta);
+            initialPinchDistance = currentDistance; // Update for continuous scaling
+        }
+    }
+}, { passive: false });
+
+viewport.addEventListener('touchend', () => {
+    isDragging = false;
+    initialPinchDistance = null;
+});
+
+// Initial focus
+setTimeout(reset, 150);
 </script>
 </body>
 </html>
