@@ -7,15 +7,21 @@
     <meta http-equiv="Expires" content="0">
     <!-- Updated viewport to allow user scaling/pinching for the large tree -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Azoulay Family Tree - Comprehensive Spouses & Links 1V1</title>
+    <title>Azoulay Family Tree - Comprehensive Spouses & Links 1V2</title>
     <style>
         body { 
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* This centers horizontally */
+            min-width: fit-content; /* Ensures the body expands to fit the title */
             font-family: 'Segoe UI', Tahoma, sans-serif; 
             background: #f0f2f5; 
             margin: 0; 
             /* Changed from hidden to auto to allow mobile scrolling */
             overflow: auto; 
             -webkit-overflow-scrolling: touch; 
+            width: 100%;
+            overflow-x: auto;
         }
 
         #viewport { 
@@ -81,7 +87,7 @@
     </style>
 </head>
 <body>
-<h1 style="text-align: center;">Azoulay Family Tree 1.1</h1>
+<h1 style="text-align: center;">Azoulay Family Tree 1.2</h1>
 <div class="controls">
     <button class="btn" onclick="zoom(1.1)">Zoom +</button>
     <button class="btn" onclick="zoom(0.9)">Zoom -</button>
